@@ -1,15 +1,14 @@
 // src/App.jsx
 import {
-  BrowserRouter as Router,
-  Routes,
   Route,
-  Navigate,
+  BrowserRouter as Router,
+  Routes
 } from "react-router-dom";
-import MainPage from "../dashboard/MainPage";
 import SignUpCompanyPage from "../authentication/SigUpCompany";
-import Navbar from "../components/NavigationBar";
-import CreateClient from "../client/NewClient";
 import ClientList from "../client/MainPage";
+import CreateClient from "../client/NewClient";
+import Navbar from "../components/NavigationBar";
+import MainPage from "../dashboard/MainPage";
 
 const Authenticated = () => {
   return (
@@ -31,7 +30,6 @@ const Authenticated = () => {
             element={<CreateClient />}
           />
           <Route key={"/clients"} path="/clients" element={<ClientList />} />
-          <Route key={"/*"} path="/*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
     </main>

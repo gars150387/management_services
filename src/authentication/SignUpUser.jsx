@@ -148,6 +148,7 @@ const SignUpPage = () => {
             </Grid>
           </Grid>
         </form>
+      </Card>
         <Grid item xs={12}>
           <NavLink to="/login" end>
             <Button color="primary" fullWidth>
@@ -155,7 +156,6 @@ const SignUpPage = () => {
             </Button>
           </NavLink>
         </Grid>
-      </Card>
     </Box>
   );
 };

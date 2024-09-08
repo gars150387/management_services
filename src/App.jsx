@@ -1,20 +1,17 @@
-import {
-  Route,
-  BrowserRouter as Router,
-  Routes
-} from "react-router-dom";
+import { Route, Routes } from "react-router";
 import "./App.css";
 import LoginPage from "./authentication/LoginPage";
 import SignUpPage from "./authentication/SignUpUser";
-import SignUpCompanyPage from "./authentication/SigUpCompany";
-import ClientList from "./client/MainPage";
-import CreateClient from "./client/NewClient";
+// import SignUpCompanyPage from "./authentication/SigUpCompany";
+// import ClientList from "./client/MainPage";
+// import CreateClient from "./client/NewClient";
 import Navbar from "./components/NavigationBar";
-import MainPage from "./dashboard/MainPage";
+// import MainPage from "./dashboard/MainPage";
 import ProtectedRoute from "./protectedRoutes/ProtectedRoutes";
+import Authenticated from "./routes/authenticated";
 function App() {
   return (
-    <Router>
+    <div>
       <header>
         <Navbar />
       </header>
@@ -23,44 +20,44 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route
-          path="/signup-company"
+          path="/*"
           element={
             <ProtectedRoute>
-              <SignUpCompanyPage />
+              <Authenticated />
             </ProtectedRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/"
           element={
-            <MainPage />
-            // <ProtectedRoute>
-            // </ProtectedRoute>
+            <ProtectedRoute>
+              <MainPage />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/clients"
           element={
-            <ClientList />
-            // <ProtectedRoute>
-            // </ProtectedRoute>
+            <ProtectedRoute>
+              <ClientList />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/new-client"
           element={
-            <CreateClient />
-            // <ProtectedRoute>
-            // </ProtectedRoute>
+            <ProtectedRoute>
+              <CreateClient />
+            </ProtectedRoute>
           }
-        />
+        /> */}
 
         {/* <Route key={"/*"} path="/*" element={<Navigate to="/" replace />} /> */}
 
         {/* Catch-all for 404 */}
         {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
       </Routes>
-    </Router>
+    </div>
   );
 }
 
