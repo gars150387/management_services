@@ -183,7 +183,7 @@ const SignUpCompanyPage = () => {
                 color="primary"
                 fullWidth
               >
-                Sign up company
+                Create new company
               </Button>
             </Grid>
           </Grid>

@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 // src/components/ProtectedRoute.jsx
-import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
+import Navbar from "../components/NavigationBar";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -21,7 +22,16 @@ const ProtectedRoute = ({ children }) => {
     return <p>Loading...</p>;
   }
 
-  return isAuthenticated ? children : <Navigate to="/" />;
+  return isAuthenticated ? (
+    <main>
+      <header>
+        <Navbar />
+      </header>
+      {children}
+    </main>
+  ) : (
+    <Navigate to="/" />
+  );
 };
 
 export default ProtectedRoute;

@@ -16,69 +16,10 @@ const CreateClient = () => {
   const navigate = useNavigate();
   const companyDataStored = useRef();
   // Handle form submission to insert client data into Supabase
-  const [infoCompany, setInfoCompany] = useState([]);
-  console.log("infoCompany", infoCompany);
   useEffect(() => {
     companyDataStored.current = JSON.parse(localStorage.getItem("companyData"));
     console.log(companyDataStored.current);
   }, []);
-
-  const companyDataInfoFromDB = async () => {
-    const { data: companyData, error: companyError } = await supabase
-      .from("company")
-      .select("*")
-      .eq("id", checkArray(companyDataStored.current).id)
-      .single();
-    if (companyError) {
-      setInfoCompany(null);
-      throw new Error(companyError.message);
-    }
-    console.log(companyData);
-    return setInfoCompany(companyData);
-  };
-  const UpdateCompanyClients = async (props) => {
-    console.log(props);
-    await companyDataInfoFromDB();
-    if (infoCompany === null) {
-      notification.error({
-        message: "Error",
-        description: `infoCompany error: ${infoCompany}`,
-      });
-
-      //   throw new Error("Error fetching company data.");
-    } else {
-      const existingClientList = JSON.parse(infoCompany.client);
-      console.log("existingClientList", existingClientList);
-      const clientLists = JSON.stringify([...existingClientList, `${props}`]);
-      console.log("clientLists", clientLists);
-      const { error: updateError } = await supabase
-        .from("company")
-        .update({
-          client: clientLists,
-        })
-        .eq("id", checkArray(companyDataStored.current).id);
-      if (updateError) {
-        notification.error({
-          message: "Error",
-          description: `updateError.message: ${updateError.message}`,
-        });
-
-        // throw new Error(`updateError: ${updateError.message}`);
-      }
-      await companyDataInfoFromDB();
-      notification.success({
-        message: "Client created successfully.",
-        description: "Clients created successfully.",
-      });
-
-      notification.success({
-        message: "Client added successfully.",
-        description: "Clients added to company successfully.",
-      });
-      navigate("/clients");
-    }
-  };
-
   const onSubmit = async (data) => {
     const {
       first_name,
@@ -95,7 +36,7 @@ const CreateClient = () => {
 
     try {
       // Insert client data into Supabase and get the new client's id
-      const { data: insertedClient, error: insertError } = await supabase
+      const { error: insertError } = await supabase
         .from("customer")
         .insert({
           first_name,
@@ -108,6 +49,7 @@ const CreateClient = () => {
           legal_id,
           phone,
           extra,
+          company_id:checkArray(companyDataStored.current).id
         })
         .select("id") // Get the newly inserted client's ID
         .single();
@@ -115,11 +57,8 @@ const CreateClient = () => {
       if (insertError) {
         throw new Error(`insertError: ${insertError.message}`);
       }
-
+      return navigate("/clients");
       // Once the client is inserted, retrieve the company's current client data
-      const newClientId = insertedClient.id;
-
-      await UpdateCompanyClients(newClientId);
     } catch (error) {
       // Error handling
       notification.error({

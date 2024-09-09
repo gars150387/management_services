@@ -2,7 +2,7 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import { Card, notification } from "antd";
 import { useForm } from "react-hook-form";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
 const SignUpPage = () => {
@@ -143,19 +143,20 @@ const SignUpPage = () => {
                 color="primary"
                 fullWidth
               >
-                Sign up user
+                Create new user
               </Button>
             </Grid>
           </Grid>
         </form>
-      </Card>
-        <Grid item xs={12}>
-          <NavLink to="/login" end>
-            <Button color="primary" fullWidth>
-              Log In
-            </Button>
-          </NavLink>
+        <Grid margin={"3dvh 0 0 0"} item xs={12}>
+          <p>
+            Have you an account?{" "}
+            <Link to="/login" end>
+              Sign in here
+            </Link>
+          </p>
         </Grid>
+      </Card>
     </Box>
   );
 };

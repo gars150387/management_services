@@ -2,7 +2,7 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import { Card, notification } from "antd";
 import { useForm } from "react-hook-form";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
 const LoginPage = () => {
@@ -15,7 +15,7 @@ const LoginPage = () => {
 
   const onSubmit = async (data) => {
     const { email, password } = data;
-    const { error, data:session } = await supabase.auth.signInWithPassword({
+    const { error, data: session } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -26,10 +26,10 @@ const LoginPage = () => {
         description: error.message,
       });
     } else {
-      const { data:companyInfo, error:companyError } = await supabase
-      .from("company")
-      .select("*")
-      .ilike("employees", `%${session.user.id}%`)
+      const { data: companyInfo, error: companyError } = await supabase
+        .from("company")
+        .select("*")
+        .ilike("employees", `%${session.user.id}%`);
       if (companyError) {
         notification.error({
           message: "Login Failed",
@@ -80,12 +80,9 @@ const LoginPage = () => {
             Log In
           </Button>
         </form>
-        <Grid item xs={12}>
-          <NavLink to="/signup" end>
-            <Button color="primary" fullWidth>
-              Sign Up
-            </Button>
-          </NavLink>
+        <Grid margin={'3dvh 0 0 0'} item xs={12}>
+          <p>Don&apos;t have account yet? <Link to="/sign_up">Sign up here</Link> </p>
+
         </Grid>
       </Card>
     </Box>

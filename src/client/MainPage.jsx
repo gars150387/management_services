@@ -4,42 +4,32 @@ import { supabase } from "../supabaseClient";
 import { Button, Box, Typography } from "@mui/material";
 import { Card, Spin, Table } from "antd";
 import { useNavigate } from "react-router-dom";
+import { checkArray } from "../components/utils/checkArray";
 
 const ClientList = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const companyId = JSON.parse(localStorage.getItem("companyData"));
+  console.log("companyId", companyId);
   const fetchClients = async () => {
     setLoading(true);
-    const result = new Set();
     try {
+      console.log(checkArray(companyId).id)
       // Step 1: Retrieve the company client IDs from the company table
-      const { error: companyError } = await supabase
-        .from("company")
-        .select("client")
-        .eq("id", companyId[0].id)
+      const { data: customerData, error: customerError } = await supabase
+        .from("customer")
+        .select("*")
+        .eq("company_id", checkArray(companyId).id) // Fetch customers whose IDs match the clientIds
         .single();
-
-      if (companyError) {
-        throw new Error(companyError.message);
+      console.log("customerData", customerData);
+      if (customerError) {
+        setLoading(false);
+        throw new Error(customerError.message);
       }
-      // Step 2: Parse the client field if it's a JSON-like text
-      const clientIds = JSON.parse(companyId[0].client); // Assuming the client field is a JSON-like string of customer IDs
       // Step 3: Retrieve all customers based on the IDs found in the company client column
-      for (let customerId of clientIds) {
-        const { data: customerData, error: customerError } = await supabase
-          .from("customer")
-          .select("*")
-          .eq("id", Number(customerId)); // Fetch customers whose IDs match the clientIds
-        if (customerError) {
-          throw new Error(customerError.message);
-        }
-        // Return the customer data
-        result.add(customerData[0]);
-      }
       setLoading(false);
-      return setClients(Array.from(result));
+      return setClients(customerData);
     } catch (error) {
       console.error("Error fetching company customers:", error.message);
       return null;
@@ -52,31 +42,31 @@ const ClientList = () => {
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
       render: (text, record) => `${record.first_name} ${record.last_name}`,
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
     },
     {
-      title: 'Phone',
-      dataIndex: 'phone',
-      key: 'phone',
+      title: "Phone",
+      dataIndex: "phone",
+      key: "phone",
     },
     {
-      title: 'Address',
-      key: 'address',
-      render: (text, record) => 
+      title: "Address",
+      key: "address",
+      render: (text, record) =>
         `${record.street}, ${record.city}, ${record.state}, ${record.zip_code}`,
     },
     {
-      title: 'Extra',
-      dataIndex: 'extra',
-      key: 'extra',
+      title: "Extra",
+      dataIndex: "extra",
+      key: "extra",
     },
   ];
 
