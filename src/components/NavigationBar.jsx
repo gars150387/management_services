@@ -5,13 +5,13 @@ import { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import "./style/style.css";
-
+import { checkArray } from "./utils/checkArray";
+const company = JSON.parse(localStorage.getItem("companyData"));
 const navItems = [
-  { title: "home", route: "/"},
-  { title: "dashboard", route: "/"},
-  { title: "clients", route: "/clients"},
+  { title: `${checkArray(company).name}`, route: "/" },
+  { title: "dashboard", route: "/" },
+  { title: "clients", route: "/clients" },
 ];
-
 const Navbar = () => {
   const navigate = useNavigate();
 
@@ -82,7 +82,26 @@ const Navbar = () => {
                   alignItems: "center",
                 }}
               >
-                {navItems.map((item) => {
+                {navItems.map((item, index) => {
+                  if (index < 1) {
+                    return (
+                      <NavLink key={item.title} to={`${item.route}`}>
+                        <div className="content-main-navbar-updated">
+                          <article
+                            className={"nav-item-base-1-main-navbar-updated"}
+                          >
+                            <div className="content-2-main-navbar-updated">
+                              <div className="text-1-main-navbar-updated text-mdsemibold">
+                                <p style={{ textTransform: "capitalize" }}>
+                                  {item.title}
+                                </p>
+                              </div>
+                            </div>
+                          </article>
+                        </div>
+                      </NavLink>
+                    );
+                  }
                   return (
                     <NavLink key={item.title} to={`${item.route}`}>
                       <div className="content-main-navbar-updated">

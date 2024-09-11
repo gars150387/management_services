@@ -11,18 +11,15 @@ const ClientList = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const companyId = JSON.parse(localStorage.getItem("companyData"));
-  console.log("companyId", companyId);
   const fetchClients = async () => {
     setLoading(true);
     try {
-      console.log(checkArray(companyId).id)
       // Step 1: Retrieve the company client IDs from the company table
       const { data: customerData, error: customerError } = await supabase
         .from("customer")
         .select("*")
-        .eq("company_id", checkArray(companyId).id) // Fetch customers whose IDs match the clientIds
-        .single();
-      console.log("customerData", customerData);
+        .eq("company_id", checkArray(companyId).id); // Fetch customers whose IDs match the clientIds
+
       if (customerError) {
         setLoading(false);
         throw new Error(customerError.message);
@@ -32,7 +29,7 @@ const ClientList = () => {
       return setClients(customerData);
     } catch (error) {
       console.error("Error fetching company customers:", error.message);
-      return null;
+      return setLoading(false);
     }
   };
 

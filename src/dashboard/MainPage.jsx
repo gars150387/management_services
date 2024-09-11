@@ -179,7 +179,7 @@ const MainPage = () => {
           ))}
         </select>
       </header>
-
+      {console.log(events)}
       {/* Calendar Component */}
       <div style={{ height: "500px", margin: "50px 0" }}>
         <Calendar
