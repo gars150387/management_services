@@ -8,7 +8,7 @@ import "./style/style.css";
 import { checkArray } from "./utils/checkArray";
 const company = JSON.parse(localStorage.getItem("companyData"));
 const navItems = [
-  { title: `${checkArray(company).name}`, route: "/" },
+  { title: `${checkArray(company)?.name ?? ""}`, route: "/" },
   { title: "dashboard", route: "/" },
   { title: "clients", route: "/clients" },
 ];
