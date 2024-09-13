@@ -45,6 +45,7 @@ const Navbar = () => {
         description: error.message,
       });
     } else {
+      localStorage.removeItem("companyData");
       notification.success({
         message: "Logged Out",
         description: "You have successfully logged out.",

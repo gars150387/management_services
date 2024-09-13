@@ -20,7 +20,6 @@ const SignUpCompanyPage = () => {
     if (!session) {
       navigate("/login");
     }
-    console.log(userInfo);
     return setUserInfo(session);
   };
 
@@ -62,15 +61,16 @@ const SignUpCompanyPage = () => {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+      width:"100vw",
+      backgroundColor: "var(--blue700)",
+    }}
+  >
       <Card style={{ width: 500 }}>
-        <h2>Company Sign Up</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2}>
             {/* Company Name */}

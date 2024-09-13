@@ -54,10 +54,11 @@ const LoginPage = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        width:"100vw",
+        backgroundColor: "var(--blue700)",
       }}
     >
       <Card style={{ width: 400 }}>
-        <h2>Login</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             label="Email"

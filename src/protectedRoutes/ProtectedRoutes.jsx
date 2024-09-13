@@ -52,7 +52,7 @@ const ProtectedRoute = ({ children }) => {
       </main>
     </NavbarContext.Provider>
   ) : (
-    <Navigate to="/" />
+    <Navigate to="/login" />
   );
 };
 

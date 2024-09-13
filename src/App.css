@@ -1,6 +1,9 @@
 body{
   max-width: 1200px;
   min-width: 720px;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
   margin: 0 auto;
   padding: 5rem;
   text-align: center;

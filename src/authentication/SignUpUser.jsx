@@ -67,15 +67,16 @@ const SignUpPage = () => {
   };
   return (
     <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+      width:"100vw",
+      backgroundColor: "var(--blue700)",
+    }}
+  >
       <Card style={{ width: 400 }}>
-        <h2>Sign Up</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2}>
             {/* First Name Field */}
