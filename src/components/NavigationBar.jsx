@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
 // src/components/Navbar.jsx
 import { AppBar, Box, Grid, Toolbar } from "@mui/material";
-import { notification } from "antd";
-import { useEffect } from "react";
+import { notification, Select } from "antd";
+import React, { useContext, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { NavbarContext } from "../protectedRoutes/ProtectedRoutes";
 import { supabase } from "../supabaseClient";
 import "./style/style.css";
 import { checkArray } from "./utils/checkArray";
@@ -12,9 +14,14 @@ const navItems = [
   { title: "dashboard", route: "/" },
   { title: "clients", route: "/clients" },
 ];
-const Navbar = () => {
-  const navigate = useNavigate();
+const cultures = ["en", "es"];
 
+const Navbar = () => {
+  const { value, setValue } = useContext(NavbarContext);
+  const navigate = useNavigate();
+  const handleChange = (value) => {
+    return setValue(value);
+  };
   // Fetch the user information from Supabase
   useEffect(() => {
     const fetchUser = async () => {
@@ -74,11 +81,16 @@ const Navbar = () => {
               width: `100%`,
             }}
           >
-            <Grid item sm={9} md={6} lg={6}>
+            <Grid display={'flex'} justifyContent={"flex-start"} alignItems={"center"} item sm={12} md={12} lg={12}>
               <Box
                 sx={{
-                  display: { xs: "none", sm: "none", md: "flex", lg: "flex" },
-                  justifyContent: "flex-start",
+                  display: {
+                    xs: "none",
+                    sm: "inline-flex",
+                    md: "flex",
+                    lg: "flex",
+                  },
+                  justifyContent: "center",
                   alignItems: "center",
                 }}
               >
@@ -150,6 +162,37 @@ const Navbar = () => {
                       </article>
                     </div>
                   </button>
+                </NavLink>
+                <NavLink>
+                  <div className="content-2-main-navbar-updated">
+                    <div className="text-1-main-navbar-updated text-mdsemibold">
+                      <Select
+                        defaultValue="en"
+                        style={{
+                          backgroundColor: "transparent",
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          zIndex: 10,
+                          margin: "auto",
+                        }}
+                        onChange={handleChange}
+                        dropdownRender={(menu) => (
+                          <div style={{ margin: "3dvh 0 0 0" }}>{menu}</div>
+                        )}
+                        options={[
+                          ...cultures.map((c, idx) => {
+                            return {
+                              value: c,
+                              label: c,
+                            };
+                          }),
+                        ]}
+                        popupClassName="custom-popup"
+                      />
+                    </div>
+                  </div>
                 </NavLink>
               </Box>
             </Grid>

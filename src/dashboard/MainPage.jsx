@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { Button, Form, Input, Modal, Select } from "antd";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Calendar } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
@@ -10,10 +10,20 @@ import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
 import { localizer } from "../components/CalendarLocalizator";
 import EditEventModal from "../components/EditModal";
+import { NavbarContext } from "../protectedRoutes/ProtectedRoutes";
 import { supabase } from "../supabaseClient";
 const { TextArea } = Input;
 const { Option } = Select;
-const cultures = ["en", "es"];
+export const OutlinedInputStyle = {
+  borderRadius: "8px",
+  outline: "none",
+  backgroundColor: "#fff",
+  verticalAlign: "center",
+  boxShadow: "1px 1px 2px rgba(16, 24, 40, 0.05)",
+  height: "2.5rem",
+  padding: "12px",
+};
+
 const lang = {
   en: null,
   es: {
@@ -29,17 +39,11 @@ const lang = {
     showMore: (total) => `+${total} más`,
   },
 };
-export const OutlinedInputStyle = {
-  borderRadius: "8px",
-  outline: "none",
-  backgroundColor: "#fff",
-  verticalAlign: "center",
-  boxShadow: "1px 1px 2px rgba(16, 24, 40, 0.05)",
-  height: "2.5rem",
-  padding: "12px",
-};
+
+
 const MainPage = () => {
-  const [culture, setCulture] = useState("en");
+  const { value } = useContext(NavbarContext);
+  console.log(value)  
   const [clients, setClients] = useState([]);
   const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -53,23 +57,12 @@ const MainPage = () => {
     fetchEvents();
   }, []);
 
-  const cultureOnClick = useCallback(
-    ({ target: { value } }) => {
-      // really better to useReducer for simultaneously setting multiple state values
-      setCulture(value);
-    },
-    [setCulture]
-  );
   const { messages } = useMemo(
     () => ({
-      messages: lang[culture],
+      messages: lang[value],
     }),
-    [culture]
+    [value]
   );
-  useEffect(() => {
-    fetchClients();
-    fetchEvents();
-  }, []);
 
   // Fetch clients from the Supabase consumer table
   const fetchClients = async () => {
@@ -163,27 +156,10 @@ const MainPage = () => {
   };
   return (
     <div className="App">
-      <header>
-        <h2>Event Calendar</h2>
-        <br />{" "}
-        <select
-          className="form-control"
-          style={{ width: 200, display: "inline-block" }}
-          defaultValue={"fr"}
-          onChange={cultureOnClick}
-        >
-          {cultures.map((c, idx) => (
-            <option key={idx} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
-      </header>
-      {console.log(events)}
       {/* Calendar Component */}
       <div style={{ height: "500px", margin: "50px 0" }}>
         <Calendar
-          culture={culture}
+          culture={value}
           localizer={localizer}
           events={events}
           selectable
