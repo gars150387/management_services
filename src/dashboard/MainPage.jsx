@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid } from "@mui/material"; 
 import { Button, Form, Input, Modal, Select } from "antd";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { Calendar } from "react-big-calendar";
@@ -35,15 +35,12 @@ const lang = {
     next: "Después",
     today: "Hoy",
     agenda: "El Diario",
-
     showMore: (total) => `+${total} más`,
   },
 };
 
-
 const MainPage = () => {
   const { value } = useContext(NavbarContext);
-  console.log(value)  
   const [clients, setClients] = useState([]);
   const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -76,7 +73,6 @@ const MainPage = () => {
 
   // Fetch events from Supabase
   const fetchEvents = async () => {
-    // Fetch all events from the events table
     const { data: events, error: eventsError } = await supabase
       .from("events")
       .select("*");
@@ -86,14 +82,13 @@ const MainPage = () => {
       return;
     }
 
-    // Fetch consumer information for each event based on the client_id
     const formattedEvents = await Promise.all(
       events.map(async (event) => {
         const { data: client, error: clientError } = await supabase
           .from("customer")
           .select("*")
           .eq("id", event.client_id)
-          .single(); // Assuming client_id is unique for each consumer
+          .single();
 
         if (clientError) {
           console.error(
@@ -116,20 +111,17 @@ const MainPage = () => {
         };
       })
     );
-    // Set the events in state
     setEvents(formattedEvents);
   };
 
-  // Handle calendar day click to open modal
   const handleSelectSlot = (slotInfo) => {
     setSelectedDate(slotInfo.start);
     setShowModal(true);
   };
 
-  // Handle form submission
   const handleSubmit = async (values) => {
     const { client, description } = values;
-    // Insert event into Supabase
+
     const { error } = await supabase.from("events").insert([
       {
         client_id: client,
@@ -144,9 +136,8 @@ const MainPage = () => {
       toast.error("Failed to schedule the event.");
     } else {
       toast.success("Event scheduled successfully!");
-      fetchEvents(); // Refresh the events
-
-      setShowModal(false); // Close modal after submission
+      fetchEvents();
+      setShowModal(false);
     }
   };
 
@@ -154,10 +145,17 @@ const MainPage = () => {
     setShowEditModal(true);
     setSelectedEvent(event);
   };
+
   return (
     <div className="App">
-      {/* Calendar Component */}
-      <div style={{ height: "500px", margin: "50px 0" }}>
+      <div
+      id="calendar-container"
+        style={{
+          width: "100vw",
+          maxWidth: "1240px",
+          margin: "-15dvh auto 0",
+        }}
+      >
         <Calendar
           culture={value}
           localizer={localizer}
@@ -168,53 +166,46 @@ const MainPage = () => {
           startAccessor="start"
           endAccessor="end"
           messages={messages}
-          style={{ height: 500 }}
+          style={{
+            width: "100%",
+            height:"500px",
+            margin: "10dvh auto",
+            backgroundColor: "var(--basewhite)",
+          }}
         />
       </div>
 
-      {/* Modal for Scheduling Event */}
       <Modal
         title="Schedule Service"
         open={showModal}
+        centered
+        width={1000}
         onCancel={() => setShowModal(false)}
         footer={[
           <Grid
             key={"footer"}
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginTop: "1rem",
-              gap: "1rem",
-            }}
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
+            container
+            spacing={2}
+            style={{ marginTop: "1rem" }}
           >
-            <Button
-              style={{ width: "100%" }}
-              key="back"
-              onClick={() => setShowModal(false)}
-            >
-              Cancel
-            </Button>
-
-            <Button
-              style={{ width: "100%" }}
-              key="submit"
-              type="primary"
-              onClick={() => form.submit()}
-            >
-              Schedule event
-            </Button>
+            <Grid item xs={12} sm={6}>
+              <Button style={{ width: "100%" }} onClick={() => setShowModal(false)}>
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Button
+                style={{ width: "100%" }}
+                type="primary"
+                onClick={() => form.submit()}
+              >
+                Schedule event
+              </Button>
+            </Grid>
           </Grid>,
         ]}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          {/* Client Selector */}
           <Form.Item
             name="client"
             label="Select Client"
@@ -229,41 +220,35 @@ const MainPage = () => {
             </Select>
           </Form.Item>
 
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            {/* Date and Time Input */}
-            <DatePicker
-              style={{
-                ...OutlinedInputStyle,
-                margin: "0.1rem 0 1.5rem",
-                width: "100%",
-              }}
-              id="calender-event"
-              showTimeSelect
-              dateFormat="Pp"
-              openToDate={selectedDate}
-              startDate={selectedDate}
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              placeholderText="Event close date"
-            />
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <DatePicker
+                style={{
+                  ...OutlinedInputStyle,
+                  width: "100%",
+                }}
+                id="calendar-event"
+                showTimeSelect
+                dateFormat="Pp"
+                openToDate={selectedDate}
+                startDate={selectedDate}
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                placeholderText="Event close date"
+              />
+            </Grid>
           </Grid>
 
-          {/* Service Description */}
           <Form.Item
             name="description"
             label="Service Description"
-            rules={[
-              { required: true, message: "Please provide a description" },
-            ]}
+            rules={[{ required: true, message: "Please provide a description" }]}
           >
-            <TextArea
-              rows={4}
-              placeholder="Describe the service to be provided"
-            />
+            <TextArea rows={4} placeholder="Describe the service to be provided" />
           </Form.Item>
         </Form>
       </Modal>
-      {/* Modal for Editing an Event */}
+
       {showEditModal && (
         <EditEventModal
           showModal={showEditModal}
@@ -272,8 +257,10 @@ const MainPage = () => {
           fetchEvents={fetchEvents}
         />
       )}
+
       <ToastContainer />
     </div>
   );
 };
+
 export default MainPage;

@@ -15,46 +15,46 @@ import ProtectedRoute from "./protectedRoutes/ProtectedRoutes";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Public routes */}
-        <Route exact path="/login" element={<LoginPage />} />
-        <Route exact path="/sign_up" element={<SignUpPage />} />
-        <Route exact path="/signup-company" element={<SignUpCompanyPage />} />
+      <Router>
+        <Routes>
+          {/* Public routes */}
+          <Route exact path="/login" element={<LoginPage />} />
+          <Route exact path="/sign_up" element={<SignUpPage />} />
+          <Route exact path="/signup-company" element={<SignUpCompanyPage />} />
 
-        {/* Protected routes */}
-        <Route
-          exact
-          path="/"
-          element={
-            <ProtectedRoute>
-              <MainPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="/new-client"
-          element={
-            <ProtectedRoute>
-              <CreateClient />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="/clients"
-          element={
-            <ProtectedRoute>
-              <ClientList />
-            </ProtectedRoute>
-          }
-        />
+          {/* Protected routes */}
+          <Route
+            exact
+            path="/"
+            element={
+              <ProtectedRoute>
+                <MainPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="/new-client"
+            element={
+              <ProtectedRoute>
+                <CreateClient />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="/clients"
+            element={
+              <ProtectedRoute>
+                <ClientList />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* Catch-all route */}
-        <Route path="/*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    </Router>
+          {/* Catch-all route */}
+          <Route path="/*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </Router>
   );
 }
 

@@ -74,7 +74,7 @@ const ClientList = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        padding: "20px",
+        margin: "5dvh auto 0",
       }}
     >
       <Card style={{ width: "100%", padding: "20px" }}>

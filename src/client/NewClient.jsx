@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { checkArray } from "../components/utils/checkArray";
 import { supabase } from "../supabaseClient";
-//{ onSuccess }
+
 const CreateClient = () => {
   const {
     register,
@@ -15,11 +15,12 @@ const CreateClient = () => {
   } = useForm();
   const navigate = useNavigate();
   const companyDataStored = useRef();
-  // Handle form submission to insert client data into Supabase
+
   useEffect(() => {
     companyDataStored.current = JSON.parse(localStorage.getItem("companyData"));
     console.log(companyDataStored.current);
   }, []);
+
   const onSubmit = async (data) => {
     const {
       first_name,
@@ -35,7 +36,6 @@ const CreateClient = () => {
     } = data;
 
     try {
-      // Insert client data into Supabase and get the new client's id
       const { error: insertError } = await supabase
         .from("customer")
         .insert({
@@ -49,24 +49,23 @@ const CreateClient = () => {
           legal_id,
           phone,
           extra,
-          company_id:checkArray(companyDataStored.current).id
+          company_id: checkArray(companyDataStored.current).id,
         })
-        .select("id") // Get the newly inserted client's ID
+        .select("id")
         .single();
 
       if (insertError) {
         throw new Error(`insertError: ${insertError.message}`);
       }
       return navigate("/clients");
-      // Once the client is inserted, retrieve the company's current client data
     } catch (error) {
-      // Error handling
       notification.error({
         message: "Error",
         description: `Modal Error: ${error.message}`,
       });
     }
   };
+
   return (
     <Box
       sx={{
@@ -74,11 +73,24 @@ const CreateClient = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        backgroundColor: "transaparent",
+        padding: { xs: "20px", md: "0px" }, // Adjust padding for smaller screens
+        margin: { xs: "10dvh 0 0", md: "0px" },
       }}
     >
-      <Card style={{ width: 500 }}>
-        <h2>Create New Client</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+      <Card
+        id="create-client-card"
+        sx={{
+          width: { xs: "100%", sm: "90%", md: "70%", lg: "500px" }, // Responsive widths
+          padding: { xs: "20px", sm: "30px" }, // Padding for the card on smaller screens
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          margin: { xs: "20dvh 0 0", ms: "10dvh 0 0", md: "0px" },
+        }}
+      >
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          style={{ margin: { xs: "10dvh 0 0", ms: "10dvh 0 0", md: "0px" } }}
+        >
           <Grid container spacing={2}>
             {/* First Name */}
             <Grid item xs={12}>
@@ -140,7 +152,7 @@ const CreateClient = () => {
               />
             </Grid>
 
-            {/* City */}
+            {/* City and State */}
             <Grid item xs={6}>
               <TextField
                 label="City"
@@ -151,8 +163,6 @@ const CreateClient = () => {
                 helperText={errors.city?.message}
               />
             </Grid>
-
-            {/* State */}
             <Grid item xs={6}>
               <TextField
                 label="State"
@@ -164,7 +174,7 @@ const CreateClient = () => {
               />
             </Grid>
 
-            {/* Zip Code */}
+            {/* Zip Code and Legal ID */}
             <Grid item xs={6}>
               <TextField
                 label="Zip Code"
@@ -175,8 +185,6 @@ const CreateClient = () => {
                 helperText={errors.zip_code?.message}
               />
             </Grid>
-
-            {/* Legal ID */}
             <Grid item xs={6}>
               <TextField
                 label="Legal ID"
@@ -219,6 +227,10 @@ const CreateClient = () => {
                 variant="contained"
                 color="primary"
                 fullWidth
+                sx={{
+                  padding: "10px",
+                  fontSize: { xs: "1rem", sm: "1.2rem" }, // Responsive font size
+                }}
               >
                 Submit
               </Button>

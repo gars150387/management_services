@@ -54,11 +54,17 @@ const LoginPage = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        width:"100vw",
+        width: "100vw",
         backgroundColor: "var(--blue700)",
       }}
     >
-      <Card style={{ width: 400 }}>
+      <Card
+        sx={{
+          width: { xs: "100%", sm: "90%", md: "500px", lg: "400px" }, // Responsive width based on screen size
+          padding: "20px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        }}
+      >
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             label="Email"
@@ -77,13 +83,22 @@ const LoginPage = () => {
             error={!!errors.password}
             helperText={errors.password?.message}
           />
-          <Button type="submit" variant="contained" color="primary" fullWidth>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{
+              marginTop: "20px",
+            }}
+          >
             Log In
           </Button>
         </form>
-        <Grid margin={'3dvh 0 0 0'} item xs={12}>
-          <p>Don&apos;t have account yet? <Link to="/sign_up">Sign up here</Link> </p>
-
+        <Grid sx={{ marginTop: "2rem", textAlign: "center" }} item xs={12}>
+          <p>
+            Don&apos;t have an account yet? <Link to="/sign_up">Sign up here</Link>
+          </p>
         </Grid>
       </Card>
     </Box>

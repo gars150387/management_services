@@ -57,6 +57,8 @@ const EditEventModal = ({ showModal, setShowModal, event, fetchEvents }) => {
     <Modal
       title={`Edit Event for ${event.data.client.first_name} ${event.data.client.last_name}`}
       footer={[]}
+      centered
+      width={1000}
       open={showModal}
       onCancel={() => closeModal()}
     >

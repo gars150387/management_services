@@ -28,13 +28,21 @@ const ProtectedRoute = ({ children }) => {
         style={{
           width: "100%",
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
           margin: "auto",
-          padding: "1rem",
         }}
       >
-        <header>
+        <header
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: "-5rem auto 5rem",
+          }}
+        >
           <Navbar />
         </header>
         <body
@@ -44,7 +52,6 @@ const ProtectedRoute = ({ children }) => {
             justifyContent: "center",
             alignItems: "center",
             margin: "auto",
-            padding: "1rem",
           }}
         >
           {children}
@@ -52,7 +59,7 @@ const ProtectedRoute = ({ children }) => {
       </main>
     </NavbarContext.Provider>
   ) : (
-    <Navigate to="/login" />
+    <Navigate to="/login" replace />
   );
 };
 

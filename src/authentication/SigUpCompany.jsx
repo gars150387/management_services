@@ -14,22 +14,22 @@ const SignUpCompanyPage = () => {
   } = useForm();
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
-  console.log(userInfo);
+
   const gettingSession = async () => {
     const { data: session } = await supabase.auth.getSession();
     if (!session) {
       navigate("/login");
     }
-    return setUserInfo(session);
+    setUserInfo(session);
   };
 
   useEffect(() => {
     gettingSession();
   }, []);
+
   const onSubmit = async (data) => {
     const { companyName, street, city, state, website, legalId, email } = data;
 
-    // Supabase sign-up call
     const { error } = await supabase.from("company").insert({
       name: companyName,
       street,
@@ -54,7 +54,7 @@ const SignUpCompanyPage = () => {
         description: "You have successfully signed up!",
       });
       setTimeout(() => {
-        return navigate("/");
+        navigate("/");
       }, 2000);
     }
   };
@@ -66,11 +66,22 @@ const SignUpCompanyPage = () => {
       justifyContent: "center",
       alignItems: "center",
       height: "100vh",
-      width:"100vw",
+      width: "100vw",
       backgroundColor: "var(--blue700)",
+      margin: { xs: "10dvh 0 0", ms: "10dvh 0 0", md: "auto" },
     }}
   >
-      <Card style={{ width: 500 }}>
+      <Card
+        style={{
+          width: { xs: "100%", sm: "90%", md: "50%"}, // Responsive width for various screen sizes
+          padding: { xs: "10px", sm: "20px" },
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: { xs: "20dvh 0 0", ms: "10dvh 0 0", md: "auto" },
+        }}
+      >
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2}>
             {/* Company Name */}
@@ -101,7 +112,7 @@ const SignUpCompanyPage = () => {
               />
             </Grid>
 
-            {/* City */}
+            {/* City and State */}
             <Grid item xs={6}>
               <TextField
                 label="City"
@@ -112,8 +123,6 @@ const SignUpCompanyPage = () => {
                 helperText={errors.city?.message}
               />
             </Grid>
-
-            {/* State */}
             <Grid item xs={6}>
               <TextField
                 label="State"
@@ -172,8 +181,6 @@ const SignUpCompanyPage = () => {
                 helperText={errors.email?.message}
               />
             </Grid>
-
-            {/* Password */}
 
             {/* Submit Button */}
             <Grid item xs={12}>
