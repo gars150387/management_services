@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material"; 
+import { Grid } from "@mui/material";
 import { Button, Form, Input, Modal, Select } from "antd";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { Calendar } from "react-big-calendar";
@@ -147,9 +147,17 @@ const MainPage = () => {
   };
 
   return (
-    <div className="App">
+    <div
+      style={{
+        padding: { xs: "0", ms: "0", md: "0 50px 0" },
+        margin: { xs: "0", md: "0 auto" },
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <div
-      id="calendar-container"
         style={{
           width: "100vw",
           maxWidth: "1240px",
@@ -167,10 +175,11 @@ const MainPage = () => {
           endAccessor="end"
           messages={messages}
           style={{
-            width: "100%",
-            height:"500px",
+            width: "100vw",
+            height: "500px",
             margin: "10dvh auto",
             backgroundColor: "var(--basewhite)",
+            padding:{xs:"10px",ms:"10px",md:"25px"},
           }}
         />
       </div>
@@ -189,7 +198,10 @@ const MainPage = () => {
             style={{ marginTop: "1rem" }}
           >
             <Grid item xs={12} sm={6}>
-              <Button style={{ width: "100%" }} onClick={() => setShowModal(false)}>
+              <Button
+                style={{ width: "100%" }}
+                onClick={() => setShowModal(false)}
+              >
                 Cancel
               </Button>
             </Grid>
@@ -242,9 +254,14 @@ const MainPage = () => {
           <Form.Item
             name="description"
             label="Service Description"
-            rules={[{ required: true, message: "Please provide a description" }]}
+            rules={[
+              { required: true, message: "Please provide a description" },
+            ]}
           >
-            <TextArea rows={4} placeholder="Describe the service to be provided" />
+            <TextArea
+              rows={4}
+              placeholder="Describe the service to be provided"
+            />
           </Form.Item>
         </Form>
       </Modal>
