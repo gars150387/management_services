@@ -4,7 +4,8 @@
   max-width: 1240px;
   min-height: auto; */
   display: flex;
-  /* margin: auto; */
+  margin: 0;
+  padding: 0;
   align-self: stretch;
   text-align: center;
   color-scheme: light dark;

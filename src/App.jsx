@@ -18,6 +18,7 @@ function App() {
       <Router>
         <Routes>
           {/* Public routes */}
+          {/* <Route exact path="/" element={<LoginPage />} /> */}
           <Route exact path="/login" element={<LoginPage />} />
           <Route exact path="/sign_up" element={<SignUpPage />} />
           <Route exact path="/signup-company" element={<SignUpCompanyPage />} />

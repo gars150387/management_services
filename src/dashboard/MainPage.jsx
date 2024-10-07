@@ -11,7 +11,7 @@ import "../App.css";
 import { localizer } from "../components/CalendarLocalizator";
 import EditEventModal from "../components/EditModal";
 import { NavbarContext } from "../protectedRoutes/ProtectedRoutes";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../supabaseClient.js";
 const { TextArea } = Input;
 const { Option } = Select;
 export const OutlinedInputStyle = {
@@ -121,15 +121,12 @@ const MainPage = () => {
 
   const handleSubmit = async (values) => {
     const { client, description } = values;
-
-    const { error } = await supabase.from("events").insert([
-      {
-        client_id: client,
-        date: selectedDate.toLocaleDateString(),
-        service: description,
-        company_id: localStorage.getItem("companyData").company_id,
-      },
-    ]);
+    const { error } = await supabase.from("events").insert({
+      client_id: client,
+      date: selectedDate,
+      service: description,
+      company_id: localStorage.getItem("companyData").company_id,
+    });
 
     if (error) {
       console.error("Error scheduling event:", error);
@@ -151,38 +148,31 @@ const MainPage = () => {
       style={{
         padding: { xs: "0", ms: "0", md: "0 50px 0" },
         margin: { xs: "0", md: "0 auto" },
-        width: "100%",
+        width: "100vw",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}
     >
-      <div
+      <Calendar
+        culture={value}
+        localizer={localizer}
+        events={events}
+        selectable
+        onSelectSlot={handleSelectSlot}
+        onDoubleClickEvent={handleExistingEvent}
+        startAccessor="start"
+        endAccessor="end"
+        messages={messages}
         style={{
-          width: "100vw",
-          maxWidth: "1240px",
-          margin: "-15dvh auto 0",
+          width: "80vw",
+          height: "500px",
+          margin: "10dvh auto",
+          backgroundColor: "var(--basewhite)",
+          padding: { xs: "10px", ms: "10px", md: "25px" },
         }}
-      >
-        <Calendar
-          culture={value}
-          localizer={localizer}
-          events={events}
-          selectable
-          onSelectSlot={handleSelectSlot}
-          onDoubleClickEvent={handleExistingEvent}
-          startAccessor="start"
-          endAccessor="end"
-          messages={messages}
-          style={{
-            width: "100vw",
-            height: "500px",
-            margin: "10dvh auto",
-            backgroundColor: "var(--basewhite)",
-            padding:{xs:"10px",ms:"10px",md:"25px"},
-          }}
-        />
-      </div>
+      />
+      {/* </div> */}
 
       <Modal
         title="Schedule Service"

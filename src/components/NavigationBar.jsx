@@ -21,10 +21,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { NavbarContext } from "../protectedRoutes/ProtectedRoutes";
 import { supabase } from "../supabaseClient";
 import "./style/style.css";
-import { checkArray } from "./utils/checkArray";
 const company = JSON.parse(localStorage.getItem("companyData"));
 const navItems = [
-  { title: `${checkArray(company)?.name ?? ""}`, route: "/" },
+  { title: "Home", route: "/" },
   { title: "dashboard", route: "/" },
   { title: "clients", route: "/clients" },
 ];

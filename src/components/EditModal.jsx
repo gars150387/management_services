@@ -3,9 +3,9 @@ import { Grid, OutlinedInput } from "@mui/material";
 import { Button, Modal, notification } from "antd";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { supabase } from "../supabaseClient";
 import "../App.css";
 import DatePicker from "react-datepicker";
+import { supabase } from "../supabaseClient";
 
 const EditEventModal = ({ showModal, setShowModal, event, fetchEvents }) => {
   console.log(event);
@@ -35,12 +35,12 @@ const EditEventModal = ({ showModal, setShowModal, event, fetchEvents }) => {
   const handleUpdate = async (data) => {
     // Update the event in the database
     const { description } = data;
-
+    console.log(selectedDate);
     // Update the event in the database
     const { error } = await supabase
       .from("events")
       .update({
-        date: selectedDate.toLocaleDateString(),
+        date: selectedDate,
         service: description,
       })
       .eq("id", event.data.event.id);

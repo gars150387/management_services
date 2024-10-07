@@ -1,10 +1,10 @@
 // src/components/ClientList.jsx
-import { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import { Button, Box, Typography } from "@mui/material";
-import { Card, Spin, Table } from "antd";
+import { Grid } from "@mui/material";
+import { Spin, Table, Button } from "antd";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { checkArray } from "../components/utils/checkArray";
+import { supabase } from "../supabaseClient";
 
 const ClientList = () => {
   const [clients, setClients] = useState([]);
@@ -68,32 +68,40 @@ const ClientList = () => {
   ];
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        margin: "5dvh auto 0",
-      }}
-    >
-      <Card style={{ width: "100%", padding: "20px" }}>
-        <Typography variant="h4" gutterBottom>
-          Clients
-        </Typography>
-
-        {/* Button to create new client */}
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ marginBottom: "20px" }}
-          onClick={() => navigate("/new-client")}
-        >
-          Create New Client
-        </Button>
-        {loading ? <Spin /> : <Table columns={columns} dataSource={clients} />}
-      </Card>
-    </Box>
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <Grid
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        margin={"auto"}
+        item
+        xs={12}
+        sm={12}
+        md={12}
+        lg={12}
+      >
+        <div style={{ width: "100%", margin: "20px auto 5px", padding: "20px" }}>
+          <Button
+            style={{ width: "100%", margin: "auto", padding: "20px 0" }}
+            onClick={() => navigate("/new-client")}
+          >
+            Create New Client
+          </Button>
+        </div>
+        {loading ? (
+          <Spin />
+        ) : (
+          <Table
+            columns={columns}
+            dataSource={clients}
+            style={{ width: "100%", margin: "0px auto", padding: "20px" }}
+            pagination={true}
+          />
+        )}
+      </Grid>
+      {/* </Card> */}
+    </div>
   );
 };
 
