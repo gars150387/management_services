@@ -1,6 +1,6 @@
 // src/components/CreateClient.jsx
-import { Button, Grid, TextField } from "@mui/material";
-import { notification } from "antd";
+import { Grid, TextField } from "@mui/material";
+import { notification, Button } from "antd";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -34,7 +34,6 @@ const CreateClient = () => {
       phone,
       extra,
     } = data;
-
     try {
       const { error: insertError } = await supabase
         .from("customer")
@@ -52,7 +51,6 @@ const CreateClient = () => {
           company_id: checkArray(companyDataStored.current).id,
         })
         .single();
-
       if (insertError) {
         throw new Error(`insertError: ${insertError.message}`);
       }
