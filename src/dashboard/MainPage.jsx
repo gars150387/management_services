@@ -7,13 +7,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../App.css";
 import { localizer } from "../components/CalendarLocalizator";
 import EditEventModal from "../components/EditModal";
 import { NavbarContext } from "../protectedRoutes/ProtectedRoutes";
 import { supabase } from "../supabaseClient.js";
 const { TextArea } = Input;
 const { Option } = Select;
+import "../App.css";
+
 export const OutlinedInputStyle = {
   borderRadius: "8px",
   outline: "none",
@@ -144,18 +145,10 @@ const MainPage = () => {
   };
 
   return (
-    <div
-      style={{
-        padding: { xs: "0", ms: "0", md: "0 50px 0" },
-        margin: { xs: "0", md: "0 auto" },
-        width: "100vw",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <div className="h-screen p-8">
+      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>{" "}
       <Calendar
-        culture={value}
+        culture={"us"}
         localizer={localizer}
         events={events}
         selectable
@@ -164,16 +157,9 @@ const MainPage = () => {
         startAccessor="start"
         endAccessor="end"
         messages={messages}
-        style={{
-          width: "80vw",
-          height: "500px",
-          margin: "10dvh auto",
-          backgroundColor: "var(--basewhite)",
-          padding: { xs: "10px", ms: "10px", md: "25px" },
-        }}
+        style={{ height: "calc(100vh - 150px)" }}
       />
       {/* </div> */}
-
       <Modal
         title="Schedule Service"
         open={showModal}
@@ -221,26 +207,29 @@ const MainPage = () => {
               ))}
             </Select>
           </Form.Item>
-
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <DatePicker
-                style={{
-                  ...OutlinedInputStyle,
-                  width: "100%",
-                }}
-                id="calendar-event"
-                showTimeSelect
-                dateFormat="Pp"
-                openToDate={selectedDate}
-                startDate={selectedDate}
-                selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
-                placeholderText="Event close date"
-              />
-            </Grid>
-          </Grid>
-
+          <Form.Item
+            name="date"
+            label="Date and time"
+            rules={[
+              { required: true, message: "Please provide a description" },
+            ]}
+          >
+            <DatePicker
+              style={{
+                // ...OutlinedInputStyle,
+                margin: "0.1rem 0 1.5rem",
+                width: "100%",
+              }}
+              id="calender-event"
+              showTimeSelect
+              dateFormat="Pp"
+              openToDate={selectedDate}
+              startDate={selectedDate}
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              placeholderText="Event close date"
+            />
+          </Form.Item>
           <Form.Item
             name="description"
             label="Service Description"
@@ -255,7 +244,6 @@ const MainPage = () => {
           </Form.Item>
         </Form>
       </Modal>
-
       {showEditModal && (
         <EditEventModal
           showModal={showEditModal}
@@ -264,7 +252,6 @@ const MainPage = () => {
           fetchEvents={fetchEvents}
         />
       )}
-
       <ToastContainer />
     </div>
   );

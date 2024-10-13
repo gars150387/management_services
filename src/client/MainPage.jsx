@@ -1,16 +1,19 @@
 // src/components/ClientList.jsx
-import { Grid } from "@mui/material";
-import { Spin, Table, Button } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { checkArray } from "../components/utils/checkArray";
 import { supabase } from "../supabaseClient";
+import ClientTable from "../components/ClientTable";
+import CreateClientModal from "./NewClient";
 
 const ClientList = () => {
   const [clients, setClients] = useState([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const companyId = JSON.parse(localStorage.getItem("companyData"));
+  const companyDataStored = useRef(companyId[0]);
   const fetchClients = async () => {
     setLoading(true);
     try {
@@ -37,72 +40,82 @@ const ClientList = () => {
     fetchClients();
   }, []);
 
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (text, record) => `${record.first_name} ${record.last_name}`,
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Phone",
-      dataIndex: "phone",
-      key: "phone",
-    },
-    {
-      title: "Address",
-      key: "address",
-      render: (text, record) =>
-        `${record.street}, ${record.city}, ${record.state}, ${record.zip_code}`,
-    },
-    {
-      title: "Extra",
-      dataIndex: "extra",
-      key: "extra",
-    },
-  ];
+  const handleCreateClient = async (data) => {
+    setIsLoading(true);
+    console.log(data);
+    const {
+      first_name,
+      last_name,
+      email,
+      street,
+      city,
+      state,
+      zip_code,
+      legal_id,
+      phone,
+      extra,
+    } = data;
+    try {
+      const { error: insertError } = await supabase
+        .from("customer")
+        .insert({
+          first_name,
+          last_name,
+          email,
+          street,
+          city,
+          state,
+          zip_code,
+          legal_id,
+          phone,
+          extra,
+          company_id: checkArray(companyDataStored.current).id,
+        })
+        .single();
+      if (insertError) {
+        setIsLoading(false);
+        throw new Error(`insertError: ${insertError.message}`);
+      }
+      setIsLoading(false);
+      setShowCreateModal(false)
+      return navigate("/clients");
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+  const handleUpdateClient = (updatedClient) => {
+    setClients(
+      clients.map((client) =>
+        client.id === updatedClient.id ? updatedClient : client
+      )
+    );
+  };
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <Grid
-        display={"flex"}
-        flexDirection={"column"}
-        alignItems={"center"}
-        justifyContent={"center"}
-        margin={"auto"}
-        item
-        xs={12}
-        sm={12}
-        md={12}
-        lg={12}
+    <div className="container mx-auto p-8">
+      <h1 className="text-3xl font-bold mb-6">Clients</h1>
+      <button
+        onClick={() => setShowCreateModal(true)}
+        className="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
-        <div style={{ width: "100%", margin: "20px auto 5px", padding: "20px" }}>
-          <Button
-            style={{ width: "100%", margin: "auto", padding: "20px 0" }}
-            onClick={() => navigate("/new-client")}
-          >
-            Create New Client
-          </Button>
+        Create New Client
+      </button>
+      {loading ? (
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-900"></div>
         </div>
-        {loading ? (
-          <Spin />
-        ) : (
-          <Table
-            columns={columns}
-            dataSource={clients}
-            style={{ width: "100%", margin: "0px auto", padding: "20px" }}
-            pagination={true}
-          />
-        )}
-      </Grid>
-      {/* </Card> */}
+      ) : (
+        <ClientTable clients={clients} onUpdateClient={handleUpdateClient} />
+      )}
+      {showCreateModal && (
+        <CreateClientModal
+          onClose={() => setShowCreateModal(false)}
+          onCreateClient={handleCreateClient}
+          loading={isLoading}
+        />
+      )}
     </div>
   );
 };
-
 export default ClientList;

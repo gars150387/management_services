@@ -1,31 +1,32 @@
 /* eslint-disable react/prop-types */
-// src/components/CreateClient.jsx
-import { Button } from "antd";
-import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { supabase } from "../supabaseClient";
 
-const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
+const UpdateClientModal = ({ client, onClose, onUpdateClient }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-  const companyDataStored = useRef();
-
-  useEffect(() => {
-    companyDataStored.current = JSON.parse(localStorage.getItem("companyData"));
-    console.log(companyDataStored.current);
-  }, []);
-
+  } = useForm({
+    defaultValues: client,
+  });
+  console.log(client);
   const onSubmit = async (data) => {
-    onCreateClient(data);
+    onUpdateClient({ ...data, id: client.id });
+    const { error } = await supabase
+      .from("customer")
+      .update(data)
+      .eq("id", client.id);
+    if (!error) {
+      onClose();
+    }
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+    <div id="modal-update" className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
       <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">
-          Create New Client
+          Update Client
         </h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
@@ -42,11 +43,10 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
-              placeholder="Client name"
             />
             {errors.name && (
               <p className="text-red-500 text-xs italic">
-                {errors.first_name.message}
+                {errors.name.message}
               </p>
             )}
           </div>
@@ -62,11 +62,10 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
-              placeholder="Client name"
             />
             {errors.name && (
               <p className="text-red-500 text-xs italic">
-                {errors.last_name.message}
+                {errors.name.message}
               </p>
             )}
           </div>
@@ -83,7 +82,6 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="phone"
               type="tel"
-              placeholder="Phone number"
             />
             {errors.phone && (
               <p className="text-red-500 text-xs italic">
@@ -109,7 +107,6 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
-              placeholder="Email address"
             />
             {errors.email && (
               <p className="text-red-500 text-xs italic">
@@ -125,11 +122,10 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               Legal ID
             </label>
             <input
-              {...register("legal-id")}
+              {...register("legal_id")}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="legalId"
+              id="legal_id"
               type="text"
-              placeholder="Legal ID"
             />
           </div>
           <div className="mb-4">
@@ -144,7 +140,6 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="street"
               type="text"
-              placeholder="Street address"
             />
           </div>
           <div className="mb-4">
@@ -159,7 +154,6 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="city"
               type="text"
-              placeholder="City"
             />
           </div>
           <div className="mb-4">
@@ -174,7 +168,6 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="state"
               type="text"
-              placeholder="State"
             />
           </div>
           <div className="mb-4">
@@ -189,7 +182,6 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="zip"
               type="text"
-              placeholder="ZIP code"
             />
           </div>
           <div className="mb-4">
@@ -203,23 +195,22 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               {...register("extra")}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="extraInfo"
-              placeholder="Any additional information"
             />
           </div>
           <div className="flex items-center justify-between">
-            <Button
+            <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              htmlType="submit"
+              type="submit"
             >
-              {isLoading ? "Creating..." : "Create Client"}
-            </Button>
-            <Button
+              Update Client
+            </button>
+            <button
               className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              htmlType="reset"
+              type="button"
               onClick={onClose}
             >
               Cancel
-            </Button>
+            </button>
           </div>
         </form>
       </div>
@@ -227,4 +218,4 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
   );
 };
 
-export default CreateClientModal;
+export default UpdateClientModal;

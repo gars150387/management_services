@@ -1,17 +1,12 @@
 // src/pages/SignUpCompanyPage.jsx
-import { Box, Button, Grid, TextField } from "@mui/material";
-import { Card, notification } from "antd";
+import { notification } from "antd";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
 const SignUpCompanyPage = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
 
@@ -54,149 +49,88 @@ const SignUpCompanyPage = () => {
         description: "You have successfully signed up!",
       });
       setTimeout(() => {
-        navigate("/");
+        navigate("/dashboard");
       }, 2000);
     }
   };
 
   return (
-    <Box
-    sx={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100vh",
-      width: "100vw",
-      backgroundColor: "var(--blue700)",
-      margin: { xs: "10dvh 0 0", ms: "10dvh 0 0", md: "auto" },
-    }}
-  >
-      <Card
-        style={{
-          width: { xs: "100%", sm: "90%", md: "50%"}, // Responsive width for various screen sizes
-          padding: { xs: "10px", sm: "20px" },
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: { xs: "20dvh 0 0", ms: "10dvh 0 0", md: "auto" },
-        }}
-      >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={2}>
-            {/* Company Name */}
-            <Grid item xs={12}>
-              <TextField
-                label="Company Name"
-                fullWidth
-                margin="normal"
-                {...register("companyName", {
-                  required: "Company name is required",
-                })}
-                error={!!errors.companyName}
-                helperText={errors.companyName?.message}
-              />
-            </Grid>
-
-            {/* Street Address */}
-            <Grid item xs={12}>
-              <TextField
-                label="Street"
-                fullWidth
-                margin="normal"
-                {...register("street", {
-                  required: "Street address is required",
-                })}
-                error={!!errors.street}
-                helperText={errors.street?.message}
-              />
-            </Grid>
-
-            {/* City and State */}
-            <Grid item xs={6}>
-              <TextField
-                label="City"
-                fullWidth
-                margin="normal"
-                {...register("city", { required: "City is required" })}
-                error={!!errors.city}
-                helperText={errors.city?.message}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="State"
-                fullWidth
-                margin="normal"
-                {...register("state", { required: "State is required" })}
-                error={!!errors.state}
-                helperText={errors.state?.message}
-              />
-            </Grid>
-
-            {/* Zip Code */}
-            <Grid item xs={12}>
-              <TextField
-                label="Zip Code"
-                fullWidth
-                margin="normal"
-                {...register("zipCode", { required: "Zip code is required" })}
-                error={!!errors.zipCode}
-                helperText={errors.zipCode?.message}
-              />
-            </Grid>
-
-            {/* Website */}
-            <Grid item xs={12}>
-              <TextField
-                label="Website"
-                fullWidth
-                margin="normal"
-                {...register("website", { required: "Website is required" })}
-                error={!!errors.website}
-                helperText={errors.website?.message}
-              />
-            </Grid>
-
-            {/* Legal ID */}
-            <Grid item xs={12}>
-              <TextField
-                label="Legal ID"
-                fullWidth
-                margin="normal"
-                {...register("legalId", { required: "Legal ID is required" })}
-                error={!!errors.legalId}
-                helperText={errors.legalId?.message}
-              />
-            </Grid>
-
-            {/* Email */}
-            <Grid item xs={12}>
-              <TextField
-                label="Email"
-                fullWidth
-                margin="normal"
-                {...register("email", { required: "Email is required" })}
-                error={!!errors.email}
-                helperText={errors.email?.message}
-              />
-            </Grid>
-
-            {/* Submit Button */}
-            <Grid item xs={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-              >
-                Create new company
-              </Button>
-            </Grid>
-          </Grid>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Create your account
+          </h2>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <input
+              type="text"
+              placeholder="Company Name"
+              {...register("companyName")}
+              required
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            />
+            <input
+              type="text"
+              placeholder="Street"
+              {...register("street")}
+              required
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            />
+            <input
+              type="text"
+              placeholder="City"
+              {...register("city")}
+              required
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            />
+            <input
+              type="text"
+              placeholder="State"
+              {...register("state")}
+              required
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            />
+            <input
+              type="text"
+              placeholder="ZIP"
+              {...register("zip")}
+              required
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            />
+            <input
+              type="url"
+              placeholder="Website"
+              {...register("website")}
+              required
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            />
+            <input
+              type="tel"
+              placeholder="Phone"
+              {...register("phone")}
+              required
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Register Company
+            </button>
+          </div>
         </form>
-      </Card>
-    </Box>
+      </div>
+    </div>
   );
 };
 

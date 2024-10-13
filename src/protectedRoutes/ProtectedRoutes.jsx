@@ -2,8 +2,8 @@
 // src/components/ProtectedRoute.jsx
 import { createContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import Navigation from "../components/Navigation";
 import { supabase } from "../supabaseClient";
-import Navbar from "../components/NavigationBar";
 export const NavbarContext = createContext();
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -24,39 +24,8 @@ const ProtectedRoute = ({ children }) => {
 
   return isAuthenticated ? (
     <NavbarContext.Provider value={{ value, setValue }}>
-      <main
-        style={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: "auto",
-        }}
-      >
-        <header
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "-5rem auto 5rem",
-          }}
-        >
-          <Navbar />
-        </header>
-        <body
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "auto",
-          }}
-        >
-          {children}
-        </body>
-      </main>
+      <Navigation />
+      {children}
     </NavbarContext.Provider>
   ) : (
     <Navigate to="/login" replace />

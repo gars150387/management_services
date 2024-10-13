@@ -1,33 +1,18 @@
 /* eslint-disable react/prop-types */
-// src/components/CreateClient.jsx
-import { Button } from "antd";
-import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 
-const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const companyDataStored = useRef();
-
-  useEffect(() => {
-    companyDataStored.current = JSON.parse(localStorage.getItem("companyData"));
-    console.log(companyDataStored.current);
-  }, []);
-
-  const onSubmit = async (data) => {
-    onCreateClient(data);
-  };
+const ClientDetailModal = ({ client, onClose }) => {
+  const { register } = useForm({
+    defaultValues: client,
+  });
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
       <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">
-          Create New Client
+          Update Client
         </h3>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -36,19 +21,14 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               First name
             </label>
             <input
+              readOnly
               {...register("first_name", {
                 required: "First name is required",
               })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
-              placeholder="Client name"
             />
-            {errors.name && (
-              <p className="text-red-500 text-xs italic">
-                {errors.first_name.message}
-              </p>
-            )}
           </div>
           <div className="mb-4">
             <label
@@ -58,18 +38,13 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               Last name
             </label>
             <input
+              readOnly
               {...register("last_name", { required: "Last name is required" })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
-              placeholder="Client name"
             />
-            {errors.name && (
-              <p className="text-red-500 text-xs italic">
-                {errors.last_name.message}
-              </p>
-            )}
-          </div>
+           </div>
 
           <div className="mb-4">
             <label
@@ -79,17 +54,12 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               Phone
             </label>
             <input
+              readOnly
               {...register("phone", { required: "Phone is required" })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="phone"
               type="tel"
-              placeholder="Phone number"
             />
-            {errors.phone && (
-              <p className="text-red-500 text-xs italic">
-                {errors.phone.message}
-              </p>
-            )}
           </div>
           <div className="mb-4">
             <label
@@ -99,6 +69,7 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               Email
             </label>
             <input
+              readOnly
               {...register("email", {
                 required: "Email is required",
                 pattern: {
@@ -109,13 +80,7 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
-              placeholder="Email address"
             />
-            {errors.email && (
-              <p className="text-red-500 text-xs italic">
-                {errors.email.message}
-              </p>
-            )}
           </div>
           <div className="mb-4">
             <label
@@ -125,11 +90,11 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               Legal ID
             </label>
             <input
-              {...register("legal-id")}
+              readOnly
+              {...register("legal_id")}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="legalId"
+              id="legal_id"
               type="text"
-              placeholder="Legal ID"
             />
           </div>
           <div className="mb-4">
@@ -140,11 +105,11 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               Street
             </label>
             <input
+              readOnly
               {...register("street")}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="street"
               type="text"
-              placeholder="Street address"
             />
           </div>
           <div className="mb-4">
@@ -155,11 +120,11 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               City
             </label>
             <input
+              readOnly
               {...register("city")}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="city"
               type="text"
-              placeholder="City"
             />
           </div>
           <div className="mb-4">
@@ -170,11 +135,11 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               State
             </label>
             <input
+              readOnly
               {...register("state")}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="state"
               type="text"
-              placeholder="State"
             />
           </div>
           <div className="mb-4">
@@ -185,11 +150,11 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               ZIP
             </label>
             <input
+              readOnly
               {...register("zip_code")}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="zip"
               type="text"
-              placeholder="ZIP code"
             />
           </div>
           <div className="mb-4">
@@ -203,23 +168,16 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
               {...register("extra")}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="extraInfo"
-              placeholder="Any additional information"
             />
           </div>
           <div className="flex items-center justify-between">
-            <Button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              htmlType="submit"
-            >
-              {isLoading ? "Creating..." : "Create Client"}
-            </Button>
-            <Button
+            <button
               className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              htmlType="reset"
+              type="button"
               onClick={onClose}
             >
               Cancel
-            </Button>
+            </button>
           </div>
         </form>
       </div>
@@ -227,4 +185,4 @@ const CreateClientModal = ({ onClose, onCreateClient, isLoading }) => {
   );
 };
 
-export default CreateClientModal;
+export default ClientDetailModal;

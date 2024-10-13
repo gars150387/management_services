@@ -1,6 +1,5 @@
 // src/pages/LoginPage.jsx
-import { Box, Button, Grid, TextField } from "@mui/material";
-import { Card, notification } from "antd";
+import { notification } from "antd";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
@@ -42,66 +41,65 @@ const LoginPage = () => {
           description: "You have successfully logged in!",
         });
         // Redirect to dashboard or other protected routes
-        navigate("/");
+        navigate("/dashboard");
       }
     }
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        width: "100vw",
-        backgroundColor: "var(--blue700)",
-      }}
-    >
-      <Card
-        sx={{
-          width: { xs: "100%", sm: "90%", md: "500px", lg: "400px" }, // Responsive width based on screen size
-          padding: "20px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            label="Email"
-            fullWidth
-            margin="normal"
-            {...register("email", { required: "Email is required" })}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-          />
-          <TextField
-            label="Password"
-            type="password"
-            fullWidth
-            margin="normal"
-            {...register("password", { required: "Password is required" })}
-            error={!!errors.password}
-            helperText={errors.password?.message}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{
-              marginTop: "20px",
-            }}
-          >
-            Log In
-          </Button>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Sign in to your account
+          </h2>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <label htmlFor="email-address" className="sr-only">Email address</label>
+              <input
+                id="email-address"
+                type="email"
+                autoComplete="email"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Email address"
+                {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
+              />
+              {errors.email && <span className="text-red-500 text-xs">This field is required</span>}
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">Password</label>
+              <input
+                id="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Password"
+                {...register('password', { required: true, minLength: 6 })}
+              />
+              {errors.password && <span className="text-red-500 text-xs">Password must be at least 6 characters long</span>}
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Sign in
+            </button>
+          </div>
         </form>
-        <Grid sx={{ marginTop: "2rem", textAlign: "center" }} item xs={12}>
-          <p>
-            Don&apos;t have an account yet? <Link to="/sign_up">Sign up here</Link>
-          </p>
-        </Grid>
-      </Card>
-    </Box>
+        <div className="text-center">
+          <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+            Don&lsquo;t have an account? Sign up
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 

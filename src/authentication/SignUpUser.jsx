@@ -1,6 +1,5 @@
 // src/pages/SignUpPage.jsx
-import { Box, Button, Grid, TextField } from "@mui/material";
-import { Card, notification } from "antd";
+import { notification } from "antd";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
@@ -9,7 +8,6 @@ const SignUpPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm();
   const navigate = useNavigate();
 
@@ -65,117 +63,65 @@ const SignUpPage = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        width: "100vw",
-        backgroundColor: "var(--blue700)",
-      }}
-    >
-      <Card
-        sx={{
-          width: { xs: "100%", sm: "90%", md: "80%", lg: "400px" }, // Responsive width based on screen size
-          padding: { xs: "10px", sm: "20px" },
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={2}>
-            {/* First Name Field */}
-            <Grid item xs={12}>
-              <TextField
-                label="First Name"
-                fullWidth
-                margin="normal"
-                {...register("firstName", {
-                  required: "First name is required",
-                })}
-                error={!!errors.firstName}
-                helperText={errors.firstName?.message}
-              />
-            </Grid>
-
-            {/* Last Name Field */}
-            <Grid item xs={12}>
-              <TextField
-                label="Last Name"
-                fullWidth
-                margin="normal"
-                {...register("lastName", { required: "Last name is required" })}
-                error={!!errors.lastName}
-                helperText={errors.lastName?.message}
-              />
-            </Grid>
-
-            {/* Email Field */}
-            <Grid item xs={12}>
-              <TextField
-                label="Email"
-                fullWidth
-                margin="normal"
-                {...register("email", { required: "Email is required" })}
-                error={!!errors.email}
-                helperText={errors.email?.message}
-              />
-            </Grid>
-
-            {/* Password Field */}
-            <Grid item xs={12}>
-              <TextField
-                label="Password"
-                type="password"
-                fullWidth
-                margin="normal"
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: {
-                    value: 6,
-                    message: "Password must be at least 6 characters",
-                  },
-                })}
-                error={!!errors.password}
-                helperText={errors.password?.message}
-              />
-            </Grid>
-
-            {/* Submit Button */}
-            <Grid item xs={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-                sx={{
-                  marginTop: "10px",
-                  padding: { xs: "8px", sm: "10px" },
-                }}
-              >
-                Create new user
-              </Button>
-            </Grid>
-          </Grid>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Create your account
+          </h2>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <input
+              type="text"
+              placeholder="First Name"
+              {...register("firstName", { required: true })}
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            />
+            <input
+              type="text"
+              placeholder="Last Name"
+              {...register("lastName", { required: true })}
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            />
+            <input
+              type="tel"
+              placeholder="Phone"
+              {...register("phone", { required: true })}
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              {...register("password", { required: true, minLength: 6 })}
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Register User
+            </button>
+          </div>
         </form>
-        <Grid
-          sx={{
-            marginTop: "20px",
-            textAlign: "center",
-            fontSize: { xs: "0.9rem", sm: "1rem" },
-          }}
-          item
-          xs={12}
-        >
-          <p>
-            Have you an account?{" "}
-            <Link to="/login" end>
-              Sign in here
-            </Link>
-          </p>
-        </Grid>
-      </Card>
-    </Box>
+        <div className="text-center">
+          <Link
+            to="/login"
+            className="font-medium text-indigo-600 hover:text-indigo-500"
+          >
+            Already have an account? Sign in
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 
