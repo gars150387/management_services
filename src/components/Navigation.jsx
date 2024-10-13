@@ -18,7 +18,7 @@ const Navigation = () => {
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <Link to="/dashboard" className="text-white font-bold text-xl">
-                EventMaster
+                GARS | Management
               </Link>
             </div>
             <div className="hidden md:block">
