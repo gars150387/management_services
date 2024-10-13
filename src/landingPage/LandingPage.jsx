@@ -5,7 +5,7 @@ import { Calendar, Users, UserCircle } from 'lucide-react';
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 flex flex-col justify-center items-center text-white">
-      <h1 className="text-5xl font-bold mb-8">Welcome to EventMaster</h1>
+      <h1 className="text-5xl font-bold mb-8">Welcome to GARS | Management Service</h1>
       <p className="text-xl mb-12 max-w-2xl text-center">
         Streamline your event management process with our all-in-one solution. Schedule, organize, and manage your clients with ease.
       </p>
