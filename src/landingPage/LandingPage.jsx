@@ -26,7 +26,7 @@ const LandingPage = () => {
           description="Customize your profile and manage your account settings with ease."
         />
       </div>
-      <div className="space-x-4">
+      <div className="space-x-4 pb-10 pt-1">
         <Link to="/register" className="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-blue-100 transition duration-300">
           Get Started
         </Link>
